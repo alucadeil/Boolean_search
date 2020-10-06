@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Главная страница
+{% endblock %}
+
+{% block head %}
+Информационно-поисковая система
+{% endblock %}
+
+{% block content %}
+    {% if tasks %}
+    {% for task in tasks %}
+            <div class="alert alert-warning mt-2">
+                <h3> {{ task.title }}</h3>
+                <p> {{ task.task }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>У нас нету записей!</p>
+    {% endif %}
+{% endblock %}

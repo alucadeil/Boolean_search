@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Страница результатов поиска
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="query">Введите запрос: </label><br>
+        <input id="query" type="text" name="query" required value="{{ query_string }}"><br><br>
+        <button type="submit" class="btn btn-success">Поиск</button>
+    </form>
+{% endblock %}

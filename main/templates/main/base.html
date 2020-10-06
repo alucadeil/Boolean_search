@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}  {% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="text-center">
+  <header class="masthead mb-auto">
+    <div class="inner">
+      <h3 class="masthead-brand">{% block head %}    {% endblock %}</h3>
+      <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link active" href="{% url 'home' %}">Главная</a>
+        <a class="nav-link active" href="{% url 'search' %}">Поиск</a>
+        <a class="nav-link active" href="{% url 'help' %}">Помощь</a>
+      </nav>
+    </div>
+  </header>
+  <div>
+      {% block content %}    {% endblock %}
+  </div>
+
+</body>
+</html>
