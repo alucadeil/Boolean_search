@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from bs4 import BeautifulSoup
+from eldar import build_query
 import requests
 import re
-
 from main.models import Search, Document
 
 
 def parse_docements():
+    Document.objects.all().delete()
     tut_by_page = requests.get('https://www.tut.by')
     assert tut_by_page.status_code == 200
     soup = BeautifulSoup(tut_by_page.text, 'html.parser')
@@ -25,7 +26,10 @@ def parse_docements():
                 for sent in text.split('.'):
                     if len(snippet + sent + '.') <= 300:
                         snippet += sent + '.'
-                Document.objects.update_or_create(title=title, defaults={'text': text, 'snippet': snippet, 'url': href})
+                if Document.objects.count() < 20:
+                    Document.objects.update_or_create(title=title, defaults={'text': text, 'snippet': snippet, 'url': href})
+                else:
+                    return
             except AttributeError:
                 continue
 
@@ -38,11 +42,11 @@ def search_page(request):
     if request.method == 'GET':
         return render(request, 'main/search.html')
     if request.method == 'POST':
+        Search.objects.all().delete()
         parse_docements()
         query = request.POST['query']
         search, _ = Search.objects.get_or_create(query=query)
-        return render(request, 'main/search.html')
-#redirect('result', search_id=search.id)
+        return redirect('result', search_id=search.id)
 
 def help(request):
     return render(request, 'main/help.html')
@@ -50,4 +54,5 @@ def help(request):
 
 def results(request, search_id):
     search = get_object_or_404(Search, pk=search_id)
-    return render(request, 'main/results.html', {'query': search.query, 'result': search.get_result()})
+    print(search.query)
+    return render(request, 'main/result.html', {'query': search.query, 'result': search.get_result(search.query)})

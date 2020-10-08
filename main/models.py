@@ -12,6 +12,12 @@ class Document(models.Model):
 class Search(models.Model):
     query = models.CharField(max_length=1000, null=True, default="text")
 
-    def get_result(self):
-
-
+    def get_result(self, query):
+        request = build_query(query)
+        documents = Document.objects.all()
+        docs_sim = {}
+        for doc in documents:
+            if request(doc.text):
+                print(doc.title)
+                docs_sim[doc] = 1
+        return docs_sim
