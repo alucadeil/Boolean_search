@@ -1,6 +1,6 @@
 from django.db import models
 from eldar import build_query
-
+import re
 
 class Document(models.Model):
     title = models.CharField(max_length=1000, null=True, default='Title')
@@ -18,6 +18,6 @@ class Search(models.Model):
         docs_sim = {}
         for doc in documents:
             if request(doc.text):
-                print(doc.title)
+
                 docs_sim[doc] = 1
         return docs_sim

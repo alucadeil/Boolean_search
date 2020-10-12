@@ -1,4 +1,4 @@
-#!D:\Programs\PyCharm 2020.2.2\projects\lab_1\venv\Scripts\python.exe
+#!e:\programs\pycharm 2020.2.2\projects\boolean_search\venv\scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

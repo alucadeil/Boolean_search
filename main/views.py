@@ -26,7 +26,7 @@ def parse_docements():
                 for sent in text.split('.'):
                     if len(snippet + sent + '.') <= 300:
                         snippet += sent + '.'
-                if Document.objects.count() < 20:
+                if Document.objects.count() < 100:
                     Document.objects.update_or_create(title=title, defaults={'text': text, 'snippet': snippet, 'url': href})
                 else:
                     return
@@ -38,12 +38,18 @@ def index(request):
     return render(request, 'main/index.html')
 
 
+def rebuild(request):
+    if request.method == 'GET':
+        return render(request, 'main/rebuild_base.html')
+    if request.method == 'POST':
+        parse_docements()
+        return redirect('search')
+
+
 def search_page(request):
     if request.method == 'GET':
         return render(request, 'main/search.html')
     if request.method == 'POST':
-        Search.objects.all().delete()
-        parse_docements()
         query = request.POST['query']
         search, _ = Search.objects.get_or_create(query=query)
         return redirect('result', search_id=search.id)
