@@ -22,14 +22,7 @@ def parse_docements():
                 text = ''
                 for p in article_body.find_all('p'):
                     text += p.text
-                snippet = ''
-                for sent in text.split('.'):
-                    if len(snippet + sent + '.') <= 300:
-                        snippet += sent + '.'
-                if Document.objects.count() < 100:
-                    Document.objects.update_or_create(title=title, defaults={'text': text, 'snippet': snippet, 'url': href})
-                else:
-                    return
+                Document.objects.update_or_create(title=title, defaults={'text': text, 'url': href})
             except AttributeError:
                 continue
 
